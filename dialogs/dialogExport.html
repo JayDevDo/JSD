@@ -1,0 +1,71 @@
+		<div id="JSONDetailsContainer" jsonLen="0" >
+
+			<!-- form id="jsonDetailsForm"  -->
+
+				<table style="border: none; text-align: center;">
+					<thead>
+						<tr>
+							<th>Import</th>
+							<th>import type</th>
+							<th>Actions</th>
+						</tr>
+
+					</thead>
+
+					<tbody>
+
+						<tr>
+							<td rowspan="3">
+								<textarea 
+									id="jsonXprtTA"
+									name="jsonXprtTA"
+									hasdata="false" 
+									data=""
+									placeholder="place holder TA"
+									value="[textarea]"
+									style="height: 10vh; max-width: 20vh; overflow-y: scroll; overflow-x: scroll; "
+									onfocusout="updateImportDlgLen(),checkJSON()" 
+								></textarea>
+							</td>
+
+
+							<td  rowspan="3">
+								<div id="xprtInfoSpan">
+									<h4>Import results</h4>
+									<span id="xprtInfoTALen"></span>
+								</div>
+							</td>
+
+							<td>
+								<button id="xprtGnrtBttn" onclick="generateJSON()" 	>generate JSON</button><br>
+								<button id="xprtChckBttn" onclick="checkJSON()">check JSON</button>
+							</td>
+
+						</tr>
+
+						<tr>
+							<td>
+								<button id="dlgXprtBttnBoth" onclick="importBothClick()" >Import Both</button><br>
+								<button id="dlgXprtBttnDials" onclick="importIntoDialsClick()" >Import Dials</button><br>
+								<button id="dlgXprtBttnPages" onclick="importIntoPagesClick()" >Import Pages</button>
+							</td>
+						</tr>
+
+						<tr>
+							<td>
+								<input id="xprtImprtBttn" type="file" value="allDials.json" webkitfile file></input>
+							</td>							
+						</tr>
+
+					</tbody>
+					
+					<tfoot>
+						<tr>
+							<td colspan="3">tfoot
+							</td>
+						</tr>
+					</tfoot>
+
+				</table>
+			<!-- /form -->
+		</div>

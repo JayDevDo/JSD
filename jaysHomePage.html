@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta version="202404291830">
+		<title>Jays Speeddial homepage</title>
+		<script defer src="JQ/jquery-3.7.1.min.js"></script>
+		<script defer src="JQ/jquery-UI-1.13.2.min.js"></script>
+
+		<script type="text/javascript">
+			
+			let appTiles 	= [] ; 
+			let deletedDials = [] ; 
+			let appSettings = {	
+								"maxRows": 		4,
+								"maxColumns": 	6,
+								"maxTabs": 		8,
+								"pages": 		[
+									{ "name": "MISC", 	"color": "#FFFF00", "matrix": [4,6] },
+									{ "name": "DEV", 	"color": "#00FFFF", "matrix": [3,3] },
+									{ "name": "STREAM", "color": "#FF00FF", "matrix": [4,2] },
+									{ "name": "SERVER", "color": "#00FF00", "matrix": [2,4] }
+								],
+								"newtab": 		"_blank",
+								"appBGColor": 	"#000000",
+								"appFGColor": 	"#FFFFFF",
+								"activePage": 	0,
+								"maxDeleted": 	10, 
+								"maxToasts": 	5,
+								"nav": 			"Vert", 
+								"pinned": 		0
+			} ;
+
+		</script>
+
+		<!-- storage/message -->
+		<script defer type="text/javascript" src="jhp_toaster.js"></script>
+		<script defer type="text/javascript" src="jhp_defaults.js"></script>
+		<script defer type="text/javascript" src="jhp_localStorage.js"></script>
+
+		<!-- dialogs -->
+		<script defer type="text/javascript" src="dialogs/jhp_dialogJSON.js"></script>
+		<script defer type="text/javascript" src="dialogs/jhp_dialogPage.js"></script>
+		<script defer type="text/javascript" src="dialogs/jhp_dialogDial.js"></script>
+
+		<!-- actions -->
+		<script defer type="text/javascript" src="jhp_actionsPage.js"></script>
+		<script defer type="text/javascript" src="jhp_actionsDial.js"></script>
+
+		<!-- base -->
+		<script defer type="text/javascript" src="jhp_builds.js"></script>
+		<script defer type="text/javascript" src="jhp_init.js"></script>
+
+	</head>
+
+	<body>
+
+		<div id="navi" class="navVert">
+
+			<ul id="linkContainer">
+				<li class="title"><h2>Jays Speed dial</h2></li>
+				<li class="pageTab" pgidx="0" ><h3>Page 1</h3></li>
+			</ul>
+
+			<ul id="settingActions" >
+
+				<li id="pageAddOption" >
+					<button 
+						id="addPage" 
+						onclick="openPageDialog(99)" 
+					>
+						<h3>Add page</h3>
+					</button>
+				</li>
+				
+				<li>
+					<button 	
+						id="exportDials" 
+						onclick="openExportDialog()" 
+						style="background-color: #ff00aa; color: #000000;"
+					>
+						<h3>Save dials</h3>
+					</button>
+				</li>
+
+			</ul>
+			<div id="toastContainer"></div>
+
+		</div>
+
+
+		<div id="pageContainer" class="pcVert" > 
+			
+			<div class="pageDial" pgidx="0">
+
+				<button class="tile" onclick="openTile(0,0,0)">
+						<h3>linkName</h3>
+						<p>link url</p>
+				</button>
+
+				<button class="tile" onclick="openTile(0,0,1)">
+						<h3>linkName</h3>
+						<p>link url</p>
+				</button>
+
+				<button class="tile" onclick="openTile(0,0,2)">
+						<h3>linkName</h3>
+						<p>link url</p>
+				</button>
+
+				<button class="tile" onclick="openTile(0,0,3)">
+						<h3>linkName</h3>
+						<p>link url</p>
+				</button>
+
+			</div>
+
+		</div>
+
+		<div id="pageDetailsContainer" pgidx="" >
+
+			<!-- form id="pageDetailsForm"  -->
+
+				<table style="border: none;">
+					<tr>
+						<td>
+							<label for="pageNameSelect">Name</label>
+						</td>
+						<td>
+							<input 	id="pageNameSelect" 
+									type="text" 
+									name="pageNameSelect" 
+									maxlength="12"
+									value="pageTitle"
+							></input>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="pageRowSelect">Rows</label>
+						</td>
+						<td>
+							<select id="pageRowSelect" name="pageRowSelect" value="1" >
+								<option value="1" >1</option>
+								<option value="2" >2</option>
+								<option value="3" >3</option>
+								<option value="4" >4</option>
+								<option value="5" disabled>5</option>
+								<option value="6" disabled>6</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="pageClmnSelect">Columns</label>
+						</td>
+						<td>
+							<select id="pageClmnSelect" name="pageClmnSelect" value="4" >
+								<option value="1" >1</option>
+								<option value="2" >2</option>
+								<option value="3" >3</option>
+								<option value="4" >4</option>
+								<option value="5" >5</option>
+								<option value="6" >6</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="pageBGCSelect">Background </label>
+						</td>
+						<td>
+							<input 	type="color" 
+									id="pageBGCSelect" 
+									name="pageBGCSelect" 
+									maxlength="7" 
+									placeholder="#000000"
+									value="#000000" 
+							></input>
+						</td>
+					</tr>
+
+				</table>
+
+			<!-- /form -->
+
+		</div>
+
+		<div id="dialDetailsContainer" dialIdx=""  >
+
+			<!-- form id="dialDetailsForm"  -->
+
+				<table style="border: none;">
+
+					<tr>
+						<td>
+							<label for="dialNameSelect">Name</label>
+						</td>
+						<td>
+							<input 	id="dialNameSelect" 
+								name="dialNameSelect" 
+								dlindex=999
+								type="text" 
+								maxlength="16" 
+								placeholder="dial 1"
+								value="new dial"
+							></input>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="dialRowSelect">Rows: </label>
+						</td>
+						<td>
+							<select id="dialRowSelect" name="dialRowSelect" value="3" >
+								<option value="0" >1</option>
+								<option value="1" >2</option>
+								<option value="2" >3</option>
+								<option value="3" >4</option>
+								<option value="4" disabled>5</option>
+								<option value="5" disabled>6</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="dialClmnSelect">Columns: </label>
+						</td>
+						<td>
+							<select id="dialClmnSelect" name="dialClmnSelect" value="3" >
+								<option value="0" >1</option>
+								<option value="1" >2</option>
+								<option value="2" >3</option>
+								<option value="3" >4</option>
+								<option value="4" >5</option>
+								<option value="5" >6</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="dialBGClrSelect">Background color</label>
+						</td>
+						<td>
+							<input 	id="dialBGClrSelect"	
+									type="color"  
+									name="dialBGClrSelect" 
+									maxlength="7" 
+									value="#000000"
+									placeholder="#000000"
+							></input>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="dialFGClrSelect">Text color</label>
+						</td>
+						<td>
+							<input 	id="dialFGClrSelect"	
+									type="color"
+									name="dialFGClrSelect" 
+									maxlength="7" 
+									value="#FFFFFF"
+									placeholder="#FFFFFF"
+							></input>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="dialURLSelect" >URL</label>
+						</td>
+						<td>
+							<input 	name="dialURLSelect" 
+									id="dialURLSelect" 
+									type="url" 
+									maxlength="254"
+									required 
+									value="https://"
+							></input>
+						</td>
+					</tr>
+
+				</table>
+
+			<!-- /form -->
+
+		</div>
+
+
+		<div id="JSONDetailsContainer" jsonLen="0" >
+
+			<!-- form id="jsonDetailsForm"  -->
+
+				<table style="border: none; text-align: center;">
+					<thead>
+						<tr>
+							<th>Import</th>
+							<th>import type</th>
+							<th>Actions</th>
+						</tr>
+
+					</thead>
+
+					<tbody>
+
+						<tr>
+							<td rowspan="3">
+								<textarea 
+									id="jsonXprtTA"
+									name="jsonXprtTA"
+									hasdata="false" 
+									data=""
+									placeholder="place holder TA"
+									value="[textarea]"
+									style="height: 10vh; max-width: 20vh; overflow-y: scroll; overflow-x: scroll; "
+									onfocusout="updateImportDlgLen()" 
+								></textarea>
+							</td>
+
+
+							<td  rowspan="3">
+								<div id="xprtInfoSpan">
+									<h4>Import results</h4>
+									<span id="xprtInfoTALen"></span>
+								</div>
+							</td>
+
+							<td>
+								<button id="xprtGnrtBttn" onclick="generateJSON()" 	>generate JSON</button><br>
+								<button id="xprtChckBttn" onclick="checkJSON()">check JSON</button>
+							</td>
+
+						</tr>
+
+						<tr>
+							<td>
+								<button id="dlgXprtBttnBoth" onclick="openWarning(0)" >Import Both</button><br>
+								<button id="dlgXprtBttnDials" onclick="openWarning(1)" >Import Dials</button><br>
+								<button id="dlgXprtBttnPages" onclick="openWarning(2)" >Import Pages</button>
+							</td>
+						</tr>
+
+						<tr>
+							<td>
+								<input id="xprtImprtBttn" type="file" value="allDials.json" webkitfile file></input>
+							</td>							
+						</tr>
+
+					</tbody>
+					
+					<tfoot>
+						<tr>
+							<td colspan="3">tfoot
+							</td>
+						</tr>
+					</tfoot>
+
+				</table>
+			<!-- /form -->
+		</div>
+
+		<div id="importWarning">
+
+		</div>
+
+	</body>
+
+<footer>
+	<link rel="stylesheet" type="text/css" href="jhp.css">
+	<link rel="stylesheet" href="JQ/jquery-ui- 1.12.1.css">
+</footer>
+
+</html>
