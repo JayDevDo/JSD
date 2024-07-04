@@ -35,8 +35,8 @@ let atDefault = [
 		"lstVst": ""
 	},{	
 		"index":2,
-		"name": "about:about",
-		"url": "about:about",
+		"name":"jquery.com",
+		"url": "https://learn.jquery.com/",
 		"bgClr": "#000000",
 		"fgClr": "#FFFFFF",
 		"pos": [0,0,2, true],
