@@ -11,7 +11,7 @@
 		N: load defaults (jhp_defaults.js) into LS.
 */
 
-// console.log("jhp_localStorage.js -> on_load:  currentState: ", currentState() ) ;
+// console.log("jhp_localStorage.js -> on_load:  currentState: ", currentState("jhp_localStorage-ON-LOAD") ) ;
 
 /* 
 #############
@@ -19,15 +19,37 @@
 #############
 */
 
-hasLclStrg = ()=>{ return ( localStorage.length > 0 ) ; }
+hasLclStrg = ()=>{ 
+	try{ 
+		
+		if( localStorage ){ 
 
-del_LS_All = ()=>{ console.log("del_LS_All ALL");localStorage.clear();}
+			if( localStorage.length > 0 ){
+
+				if( localStorage.pages && localStorage.dials ){ return true; } 
+
+			} 
+
+		}else{ 
+			return false; 
+		}
+
+	}catch( error ){ return false; }
+
+}
+
+del_LS_All = ()=>{ 
+	console.log("del_LS_All ALL");
+	localStorage.removeItem["pages"];
+	localStorage.removeItem["dials"];
+	localStorage.removeItem["actPg"];
+}
 
 set_LS_Base = ()=>{
 	/* Check for json here */
-	localStorage.pages = JSON.stringify([]) ;
-	localStorage.dials = JSON.stringify([]) ;
-	localStorage.actPg = JSON.stringify(0)  ;
+	localStorage.jhp.pages = JSON.stringify([]) ;
+	localStorage.jhp.dials = JSON.stringify([]) ;
+	localStorage.jhp.actPg = JSON.stringify(0)  ;
 }
 
 
@@ -41,12 +63,13 @@ hasLclStrgPgs = ()=>{
 
 	if( hasLclStrg() ){
 		try {
-			console.log("hasLclStrgPgs localStorage.pages ", localStorage.pages );
+			console.log("hasLclStrgPgs localStorage.jhp.pages ", localStorage.pages );
 			return true ;
 		} catch (error) {
-			console.error("hasLclStrg error",error,"\nappSettings.pages",appSettings.pages);
+			console.error("hasLclStrg pages error", error, "\nappSettings.pages", appSettings.pages);
 			/* Check for json here */
-			set_LS_Pages(appSettings.pages);
+			// set_LS_Pages(appSettings.pages);
+			return false ;
 		}
 	}
 }
@@ -74,7 +97,20 @@ get_LS_Pages = ()=>{
 # 	DIALS 		Global 	#
 #########################
 */
-hasLclStrgDls = ()=>{ return ( localStorage.dials.length > 0 ) ; }
+hasLclStrgDls = ()=>{ 
+
+	if( hasLclStrg() ){
+		try {
+			console.log("hasLclStrgPgs localStorage.jhp.dials ", localStorage.dials );
+			return true ;
+		} catch (error) {
+			console.error("hasLclStrg dials error",error,"\nappTiles", appTiles );
+			/* Check for json here */
+			return false ;
+		}
+	}
+
+}
 
 del_LS_Dials = ()=>{
 	console.log("del_LS_All DIALS") ;
@@ -83,7 +119,7 @@ del_LS_Dials = ()=>{
 
 set_LS_Dials = ( dialArray )=>{
 	del_LS_Dials() ;
-	localStorage.dials = JSON.stringify(  dialArray ) ;	
+	localStorage.dials = JSON.stringify( dialArray ) ;	
 }
 
 get_LS_Dials = ()=>{
@@ -166,6 +202,61 @@ set_LS_LastVisit = (dialIndex)=>{
 	}
 }
 
+/*
+#####################
+#		JSON 		#
+#####################
+*/
+
+lsJsonLoaded = ()=>{ return ( localStorage.jsonImported != "undefined" ) ; }
+
+del_LS_jsonImported = ()=>{
+	console.log("del_LS_jsonImported") ;
+	localStorage.removeItem["jsonImported"] ;
+}
+
+set_LS_jsonImported = ()=>{
+	impDt = "" + new Date().toISOString() ;
+	localStorage.jsonImported = JSON.stringify( impDt ) ;
+}
+
+get_LS_jsonImported = ()=>{
+	return parseInt(JSON.parse(localStorage.jsonImported)) || 0;
+}
+
+
+jsonData = []
+
+hasJson = ()=>{ return ( jsonData.length == 2); };
+
+getJsonData = async ()=> {
+	let jsonPrms = new Promise( ( myJsonResolve )=> {
+		let staticXhttp = new XMLHttpRequest();
+		staticXhttp.open("GET", appSettings.jsonFileNm, true ) ; 
+		staticXhttp.send() ;
+		staticXhttp.onreadystatechange = ()=>{
+			if ( (staticXhttp.readyState == 4) && (staticXhttp.status == 200) ){
+				let jsonResponse = JSON.parse( staticXhttp.responseText ) ; 
+				myJsonResolve( jsonResponse ) ; 
+			}
+		} 
+	});
+	return await jsonPrms ;
+};
+
+
+const jsonResp = Promise.all( [ getJsonData(), ] );
+jsonResp.then(
+	(values) => {
+		let allJson = values[0] ; 
+		console.log( "allJson --> pages:", allJson[1].length, "dials: ", allJson[0].length ) ;
+		if ( allJson[1].length >= 4 && allJson[0].length > 3){ jsonData = allJson; }
+	}
+)
+.catch( (error) => { console.log( error ); });
+
+
+
 
 /* 
 #############
@@ -175,8 +266,9 @@ set_LS_LastVisit = (dialIndex)=>{
 
 jhp_LS_init = ()=>{
 
-	//console.log("jhp_localStorage.js -> jhp_LS_init.start:  currentState: ", currentState() ) ;
-	console.log("jhp_localStorage.js.jhp_LS_init -> hasLclStrg: ", hasLclStrg() ) ;
+	//console.log("jhp_localStorage.js -> jhp_LS_init.start:  currentState: ", currentState("jhp_localStorage-jhp_LS_init-START") ) ;
+	console.log("jhp_localStorage.js.jhp_LS_init -> hasLclStrg: ", hasLclStrg(), "hasJson: ", hasJson() ) ;
+
 
 	if( hasLclStrg() ){
 
@@ -213,6 +305,14 @@ jhp_LS_init = ()=>{
 		}
 
 
+
+	}else if( lsJsonLoaded() && hasJson() ){
+		appSettings.pages = jsonData[1] ;
+		appTiles = jsonData[0] ;
+		set_LS_Pages( appSettings.pages );
+		set_LS_Dials( appTiles ) ;
+		set_LS_jsonImported()
+
 	}else{
 		console.log("NO Lcl Strg") ;
 		set_LS_Base() ;
@@ -223,9 +323,11 @@ jhp_LS_init = ()=>{
 
 	console.log(
 		"jhp_localStorage.js -> jhp_LS_init.end:",
-		"currentState: ", currentState() , 
-		"\n\nNext up --> jhp_init.js"
+		"currentState: ", currentState("jhp_localStorage-jhp_LS_init-END") , 
+		"\n\nNext up --> jhp_init.js -loadInit()"
 	);
 }
 
+
+// Let's start the init now that any json was loaded and LS was checked
 jhp_LS_init() ;
