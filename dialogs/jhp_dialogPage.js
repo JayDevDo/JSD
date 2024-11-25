@@ -8,24 +8,26 @@ let closePageDialog = ()=>{ $( pageDialog ).dialog( "close" ); }
 
 $( pageDialog ).dialog({
 	autoOpen: false,
+	width: parseInt( screen.width * 0.50 ), 
 	show:{ effect:"blind",   duration: 500 },
 	hide:{ effect:"explode", duration: 400 },
 	buttons: [
 		{ 	text: "OK",
 			click: function(){
 
-				let pgIndex =  parseInt( $( "#pageNameSelect" ).attr("pgindex") ) || 99 ;
+				console.log("$( pageDialog ).dialog -> appSettings.activePage: ", appSettings.activePage , "\nparseInt( $( #pageNameSelect ).attr(pgindex)): ", $( "#pageNameSelect" ).attr("pgindex")  ) ;
+
+				let pgIndex =  parseInt( $( "#pageNameSelect" ).attr("pgindex") ) || appSettings.activePage ;
 				let newTab = {
 						"name":  $( "#pageNameSelect" ).val(),
 						"color": $("#pageBGCSelect").val(),
 						"matrix": [ parseInt( $("#pageRowSelect").val() ), parseInt( $("#pageClmnSelect").val() )]
 				}
 
-				if( pgIndex == 99 ){
-					appSettings.pages.push( newTab ) ;
-				}else{
+				if( appSettings.pages[pgIndex] ){
 					appSettings.pages[pgIndex] = newTab ;
-					/* Add validator for shrinking size */
+				}else{
+					appSettings.pages.push( newTab ) ;					
 				}
 
 				set_LS_Pages( appSettings.pages ) ;
@@ -51,31 +53,29 @@ $( pageDialog ).dialog({
 let openPageDialog 	= ( pg )=>{ 
 	
 	let chosenPage = {} ;
-	let title = "Add Page (" + pg.toString() + ")" ;
+	let title = "Add Page (" + (pg+1).toString() + ")" ;
 	
 	if( pg == 99 ){
 		/* New Page */
-		chosenPage = { "name": "new page", "color": "#000000", "matrix": [4,4] } ;
+		chosenPage = { "name": "newPage", "color": "#D0D0D0", "matrix": [4,4] } ;
 	}else{
 		/* Existing Page */
 		chosenPage = appSettings.pages[ pg ] ;
-		title = "Edit Page[" + pg.toString() + "]-" + chosenPage.name ;
+		title = "Edit Page[" + (pg+1).toString() + "]-" + chosenPage.name ;
 	}
 
 	$( "#pageNameSelect" ).attr("placeholder", chosenPage.name) ;
-	$( "#pageNameSelect" ).attr("pgindex", pg ) ;
+	$( "#pageNameSelect" ).attr("pgindex", pg.toString() ) ;
 	$( "#pageNameSelect" ).text( chosenPage.name ) ; 
 	$( "#pageNameSelect" ).val( chosenPage.name ) ; 
 
 	$( "#pageRowSelect option[value=" +chosenPage.matrix[0].toString()+"]").prop("selected" , true ) ;
 	$( "#pageClmnSelect option[value="+chosenPage.matrix[1].toString()+"]").prop("selected" , true ) ;
 
-	$( "#pageBGCSelect").value = chosenPage.color ; 
+	$( "#pageBGCSelect").value = chosenPage.color;
+	$( "#pageBGCSelect").placeholder = chosenPage.color;
 
 	$( pageDialog ).dialog( "option", "title", title ) ; 
 	$( pageDialog ).dialog( "open" ) ; 
 }
-
-
-
 

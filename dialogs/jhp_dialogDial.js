@@ -1,5 +1,13 @@
 /* 
 	jhp_dialogDial.js 
+
+	version 20241126-21h00
+
+	Handles all dialog activity for Dials (aka. tiles, actually buttons )
+	The tile locator will check all dials , 
+		if the position matches (page/row/column) it will return the dial that is clicked.
+		if no match is found in appTiles, a dialTemplate is returned having index 999
+
 */
 
 let activeDial = ""
@@ -9,20 +17,17 @@ let dialDialog = $("#dialDetailsContainer") ;
 let closeDialDialog = ()=>{ $( dialDialog ).dialog( "close" ); }
 
 let openDialDialog 	= (p,r,c)=>{ 
-	activeDial = tileLocator( p, r, c ) ;
-	let chosenDial 	= tileLocator( p, r, c ) ;
-	let editOrAdd 	= (chosenDial.name == "new dial")? "Add new dial":"Edit: " + chosenDial.name ;
-	let urlWidth 	= parseInt( 250 + (chosenDial.url.length * 4) ) ;
 
-	dialDialog.attr("dlgdialidx", chosenDial.index ) ; 
+	activeDial = tileLocator( p, r, c ) ;
+	let chosenDial 	= activeDial;
+	let editOrAdd 	= (chosenDial.name == "new dial")? "Add new dial":"Edit: " + chosenDial.name ;
+	let urlWidth 	= parseInt( screen.width * 0.40 ) ;
 
 	console.log(
 		"opening dialog for dial ", [p, r, c], 
 		"editOrAdd: ", editOrAdd,
 		"tileLocator gives:\n", chosenDial,
-		"dlgdialidx",  chosenDial.index ,
-		"\nurl len:", chosenDial.url.length,
-		"predict: ", urlWidth
+		"urlWidth:", urlWidth
 	 ) ;
 
 	$( "#dialNameSelect" ).attr("placeholder", chosenDial.name) ;
@@ -43,10 +48,6 @@ let openDialDialog 	= (p,r,c)=>{
 
 	$( "#dialFGClrSelect").val( chosenDial.fgClr ) ; 
 	$( "#dialFGClrSelect").attr("placeholder", chosenDial.fgClr ) ; 
-
-	if( chosenDial.name == "new dial"  ){
-
-	}
 
 	$( dialDialog ).dialog( "option", "title", editOrAdd ) ; 
 	$( dialDialog ).dialog( "open" ); 
@@ -82,8 +83,8 @@ $( dialDialog ).dialog({
 				}
 
 				if( dialIndex == 999 ){
-					console.log("Adding a new dial") ;
 					newDial.index = appTiles.length ;
+					console.log("Adding a new dial #", newDial.index) ;
 					appTiles.push( newDial ) ;
 				}else{
 					console.log("Editing existing dial ", dialIndex) ;
@@ -99,20 +100,23 @@ $( dialDialog ).dialog({
 
 				set_LS_Dials( appTiles ) ; 
 				loadInit() ;
+				activeDial = ""
 				$( this ).dialog( "close" ) ; 
 			}
 		},{
 			text: "Delete", 
 			click: function(){ 
 				let dialIndexDel = parseInt( $( "#dialNameSelect" ).attr("dlindex") ) || 999 ;				
-				console.log("deleting idx", dialIndexDel );
-				console.log("deleting dial ", appTiles[dialIndexDel] ) ;
-				$( this ).dialog( "close" ) ; 
+				console.log("deleting idx", dialIndexDel ) ; 
+				console.log("deleting dial ", appTiles[dialIndexDel ] ) ;
 				handleDelete( dialIndexDel ) ;
+				activeDial = ""
+				$( this ).dialog( "close" ) ; 
 			} 
 		},{ 
 			text: "Cancel", 
 			click: function(){ 
+				activeDial = ""
 				$( this ).dialog( "close" ) ; 
 			} 
 		}

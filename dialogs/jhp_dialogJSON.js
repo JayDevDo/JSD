@@ -29,23 +29,6 @@ let closeExportDialog = ()=>{ $( exportDialog ).dialog( "close" ); }
 
 
 let openExportDialog = ()=>{ 
-	
-	// jsonXprtPre <pre> interaction via  .text WORKS 
-	/*
-	$( "#jsonXprtPre" ).removeData() ; 
-	$( "#jsonXprtPre" ).attr("hasdata", false ) ; 
-	$( "#jsonXprtPre" ).text( "replace this text" ) ; 
-	$( "#jsonXprtPreLen" ).text(  $( "#jsonXprtPre" ).text().length ) ; 
-	*/
-
-	// jsonXprtTxt <input> interaction via .val WORKS
-	/*
-	$( "#jsonXprtTxt" ).removeData() ; 
-	$( "#jsonXprtTxt" ).attr("hasdata", false ) ; 
-	$( "#jsonXprtTxt" ).val( "replace this text" ) ; 
-	$( "#jsonXprtTxtLen" ).text(  $( "#jsonXprtTxt" ).val().length ) ; 
-	*/
-
 	// jsonXprtTA
 	$( "#jsonXprtTA" ).removeData() ; 
 	$( "#jsonXprtTA" ).attr("hasdata", false ) ; 
