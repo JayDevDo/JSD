@@ -1,15 +1,12 @@
 /* 
 	jhp_builds.js
-
-	version = 202404281500
-	
+	version = 20241125-1800	
 */ 
 
 const bttnWdthPerc = 0.82;
 const bttnHghtPerc = 0.68;
 
-
-console.log("jhp_builds.js.load currentState:", currentState() );
+console.log("jhp_builds.js.load currentState:", currentState("jhp_builds-ON-LOAD") );
 
 selectCell = ( pos )=>{
 	// console.log("selectCell called with: ", pos.toString(),"count:", $("#pageContainer .pageDial[pgidx="+pos[0].toString()+"] .pageTable").length );

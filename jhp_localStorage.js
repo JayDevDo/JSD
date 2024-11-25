@@ -1,7 +1,7 @@
 /* 
 	jhp_localStorage.js
 	
-	version = 202404281500
+	version = 20241126-21h00
 
 	Loads or creates localstorage objects.
 	If existing LS, then LS will be used.
@@ -74,7 +74,7 @@ hasLclStrgPgs = ()=>{
 	}
 }
 
-del_LS_Pages = ()=>{console.log("del_LS_All PAGES");localStorage.removeItem["pages"];}
+del_LS_Pages = ()=>{ console.log("del_LS_All PAGES");localStorage.removeItem["pages"];}
 
 set_LS_Pages = (pagesArray)=>{ 
 	del_LS_Pages();
@@ -137,7 +137,6 @@ get_LS_Dials = ()=>{
 #########################
 # 	DIALS 	individual 	#
 #########################
-*/
 del_LS_DialX = ( dialIdx )=>{
 	let tempDials = get_LS_Dials()
 	console.log( "del_LS_All DIALX", dialIdx, "before len tempDials=", tempDials.length );
@@ -147,6 +146,7 @@ del_LS_DialX = ( dialIdx )=>{
 	set_LS_Dials(tempDials)
 	loadInit()
 }
+*/
 
 
 

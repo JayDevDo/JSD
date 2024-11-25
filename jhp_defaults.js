@@ -1,7 +1,7 @@
 /* 
 	jhp_defaults.js
 
-	version = 202404281500
+	version = 20241126-20h30
 
 	Initial and fall-back settings, pages and dials.
 
@@ -17,29 +17,29 @@
 */
 
 let atDefault = [
-	{	
-		"index":0,
-		"name": "search DDG",
-		"url": "https://duckduckgo.com/?q=entersearchstringhere&df=y&ia=web",
-		"bgClr": "#000000",
-		"fgClr": "#FFFFFF",
-		"pos": [0, 1, 0, true ],
-		"lstVst": ""
-	},{
+	{
 		"index":1,
 		"name": "Jays Speed Dial on github",
 		"url": "https://github.com/JayDevDo/JSD",
 		"bgClr": "#FF7800",
 		"fgClr": "#000000",
-		"pos": [0, 0, 0, true ],
+		"pos": [ 0, 0, 0, true ],
+		"lstVst": ""
+	},{	
+		"index":0,
+		"name": "search DDG",
+		"url": "https://duckduckgo.com/?q=entersearchstringhere&df=y&ia=web",
+		"bgClr": "#000000",
+		"fgClr": "#FFFFFF",
+		"pos": [ 0, 1, 0, true ],
 		"lstVst": ""
 	},{	
 		"index":2,
-		"name":"jquery.com",
-		"url": "https://learn.jquery.com/",
+		"name": "about:about",
+		"url": "about:about",
 		"bgClr": "#000000",
 		"fgClr": "#FFFFFF",
-		"pos": [0,0,2, true],
+		"pos": [ 0, 0, 2, true],
 		"lstVst": ""
 	}
 ];
@@ -108,7 +108,7 @@ appTiles 	= sortByPosition( atDefault ) ;
 
 handleDelete = (dialIndex)=>{
 
-	console.info( "handleDelete (", dialIndex, ") maxDeleted=", appSettings.maxDeleted, "currentState at the start of handleDelete", currentState() ) ;
+	console.info( "handleDelete (", dialIndex, ") maxDeleted=", appSettings.maxDeleted, "currentState: ", currentState("jhp_defaults-DELETE-START") ) ;
 	console.log("handleDelete appTiles[dialIndex] = ",  appTiles[dialIndex] ) ;
 
 	let toastMsg 	=	[ appTiles[dialIndex].name , " was moved to deletedDials. Reload the page (F5) to see the changes." ].join("") ;
@@ -121,16 +121,18 @@ handleDelete = (dialIndex)=>{
 	deletedDials.push( deletedDial ) ;
 	set_LS_Dials( appTiles ) ;
 
-	console.info("currentState at the end of handleDelete", currentState() ) ; 
+	console.info("currentState: ", currentState("jhp_defaults-DELETE-END") ) ; 
 	loadInit() ;
 }
 
 
-currentState = ()=>{
+currentState = ( callerId )=>{
 	return {
 		"appSettings": 	appSettings,
 		"appDials": 	appTiles.length,
-		"deleted": 		deletedDials.length
+		"appPages": 	appSettings['pages'].length,
+		"deleted": 		deletedDials.length,
+		"lastActor": 	callerId, 
 	}
 }
 
@@ -173,6 +175,6 @@ validPgClmnPos 	= (pg, clm)=>{ return ( clm <= appSettings.pages[pg]["matrix"][1
 
 console.log(
 	"jhp_defaults loaded.", 
-	"\ncurrentState: ", currentState(),
+	"\ncurrentState: ", currentState("jhp_defaults-END"),
 	"\n\nNext up --> jhp_localStorage.js"
 ) ;

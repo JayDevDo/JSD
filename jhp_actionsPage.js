@@ -37,5 +37,5 @@ showPage = ( pgIndex )=>{
 		". Max dials: ", ( appSettings.pages[pgIndex].matrix[0] * appSettings.pages[pgIndex].matrix[1] ).toString()
 	].join("") ;
 
-	myToaster(toastMessage) ; 
+	// myToaster(toastMessage) ; 
 }

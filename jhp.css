@@ -116,7 +116,6 @@ button {
 	ul{
 		list-style-type: none;
 		width: 100%;
-		
 	}
 
 	li{
@@ -184,6 +183,11 @@ button {
 		/* color: limegreen; */
 		border: 1px solid pink;
 	}
+
+	input[type="color"]{
+		min-width: 50px;
+	}
+
 
 	.dialPlaceholder{
 		color: #DADADA;
