@@ -10,28 +10,33 @@
 
 		<script type="text/javascript">
 
-			let appTiles 	= [] ; 
+			let appTiles = [] ; 
 			let deletedDials = [] ; 
 			let appSettings = {	
-								"maxRows": 		4,
-								"maxColumns": 	6,
-								"maxTabs": 		8,
-								"pages": 		[
-									{ "name": "MISC", 	"color": "#FFFF00", "matrix": [4,6] },
-									{ "name": "DEV", 	"color": "#00FFFF", "matrix": [3,3] },
-									{ "name": "STREAM", "color": "#FF00FF", "matrix": [4,2] },
-									{ "name": "SERVER", "color": "#00FF00", "matrix": [2,4] }
-								],
-								"newtab": 		"_blank",
-								"appBGColor": 	"#000000",
-								"appFGColor": 	"#FFFFFF",
-								"activePage": 	0,
-								"maxDeleted": 	10, 
-								"maxToasts": 	1,
-								"nav": 			"Vert", 
-								"jsonFileNm": 	"default.json",
-								"pinned": 		0
+				"appBGColor": "#000000",
+				"appFGColor": "#FFFFFF",
+				"activePage": 0,
+				"maxRows": 4,
+				"maxColumns": 6,
+				"maxTabs": 8,
+				"maxToasts": 1,
+				"pages": [
+					{ "name": "MISC", 	"color": "#FFFF00", "matrix": [4,6] },
+					{ "name": "DEV", 	"color": "#00FFFF", "matrix": [3,3] },
+					{ "name": "STREAM", "color": "#FF00FF", "matrix": [4,2] },
+					{ "name": "SERVER", "color": "#00FF00", "matrix": [2,4] }
+				],
+				"newtab": 		"_blank",
+				"nav": 			"Vert"
 			} ;
+
+
+		/* 
+			"jsonFileNm": "default.json", 
+			"pinned": 0		
+			"maxDeleted": 	10, 
+		*/	
+
 
 		</script>
 
@@ -44,6 +49,7 @@
 		<script defer type="text/javascript" src="dialogs/jhp_dialogJSON.js"></script>
 		<script defer type="text/javascript" src="dialogs/jhp_dialogPage.js"></script>
 		<script defer type="text/javascript" src="dialogs/jhp_dialogDial.js"></script>
+		<script defer type="text/javascript" src="dialogs/jhp_dialogSettings.js"></script>
 
 		<!-- actions -->
 		<script defer type="text/javascript" src="jhp_actionsPage.js"></script>
@@ -60,8 +66,8 @@
 		<!-- Tabs -->  
 		<div id="navi" class="navVert">
 
-			<ul id="linkContainer">
-				<li class="title"><h2>Jays Speed dial</h2></li>
+			<ul id="linkContainer" >
+				<li class="title"  onclick="openSettingDialog()"><h2>Jays Speed dial</h2></li>
 				<li class="pageTab" pgidx="0" ><h3>Page 1</h3></li>
 			</ul>
 
@@ -373,9 +379,150 @@
 			<!-- /form -->
 		</div>
 
-		<div id="importWarning">
 
-		</div>
+		<div id="settingsDetailsContainer">
+
+			<!-- form id="settingDetailsForm"  -->
+
+				<table style="border: none;">
+
+					<tr>
+						<td>
+							<label for="dlg-sttngs-maxRows">Max rows</label>
+						</td>
+						<td>
+							<select id="dlg-sttngs-maxRows" name="dlg-sttngs-maxRows" value="4" >
+								<option value="1" >1</option>
+								<option value="2" >2</option>
+								<option value="3" >3</option>
+								<option value="4" >4</option>
+								<option value="5" disabled>5</option>
+								<option value="6" disabled>6</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="dlg-sttngs-maxCols">Max columns: </label>
+						</td>
+						<td>
+							<select id="dlg-sttngs-maxCols" name="dlg-sttngs-maxCols" value="4" >
+								<option value="1" >1</option>
+								<option value="2" >2</option>
+								<option value="3" >3</option>
+								<option value="4" >4</option>
+								<option value="5" >5</option>
+								<option value="6" >6</option>
+								<option value="7" disabled>7</option>
+								<option value="8" disabled>8</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="dlg-sttngs-maxTabs">Max tabs: </label>
+						</td>
+						<td>
+							<select id="dlg-sttngs-maxTabs" name="dlg-sttngs-maxTabs" value="8" >
+								<option value="1" >1</option>
+								<option value="2" >2</option>
+								<option value="3" >3</option>
+								<option value="4" >4</option>
+								<option value="5" >5</option>
+								<option value="6" >6</option>
+								<option value="7" >7</option>
+								<option value="8" >8</option>
+								<option value="9" >9</option>
+								<option value="10" >10</option>
+								<option value="11" >11</option>
+								<option value="12" >12</option>
+								<option value="13" >13</option>
+								<option value="14" >14</option>
+								<option value="15" >15</option>
+								<option value="16" >16</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="dlg-sttngs-maxToasts" >Max infos</label>
+						</td>
+						<td>
+							<select id="dlg-sttngs-maxToasts" name="dlg-sttngs-maxToasts" value="1" >
+								<option value="1" active >1</option>
+								<option value="2" >2</option>
+								<option value="3" >3</option>
+								<option value="4" >4</option>
+								<option value="5" >5</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="dlg-sttngs-newTab">open options: </label>
+						</td>
+						<td>
+							<select id="dlg-sttngs-newTab" name="dlg-sttngs-newTab" value="_blank" >
+								<option value="_blank" active >blank</option>
+								<option value="_top" >top</option>
+								<option value="_parent" >parent</option>
+								<option value="_self" >self</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="dlg-sttngs-BGClr">App Background color</label>
+						</td>
+						<td>
+							<input 	id="dlg-sttngs-BGClr"	
+									type="color"
+									name="dlg-sttngs-BGClr" 
+									maxlength="7" 
+									value="#000000"
+									placeholder="#000000"
+							></input>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="dlg-sttngs-FGClr">App Foreground color</label>
+						</td>
+						<td>
+							<input 	id="dlg-sttngs-FGClr"	
+									type="color"
+									name="dlg-sttngs-FGClr" 
+									maxlength="7" 
+									value="#FF0000"
+									placeholder="#FF0000"
+							></input>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="dlg-sttngs-nav" >Nav Orientation</label>
+						</td>
+						<td>
+							<select id="dlg-sttngs-nav" name="dlg-sttngs-nav" value="Vert" >
+								<option value="Vert" active >Vertical</option>
+								<option value="Hori" >Horizontal</option>
+							</select>
+						</td>
+					</tr>
+
+				</table>
+
+			<!-- /form -->		
+
+		</div> 
+
 		<!-- End Dialogs --> 
 
 	</body>

@@ -232,7 +232,7 @@ hasJson = ()=>{ return ( jsonData.length == 2); };
 getJsonData = async ()=> {
 	let jsonPrms = new Promise( ( myJsonResolve )=> {
 		let staticXhttp = new XMLHttpRequest();
-		staticXhttp.open("GET", appSettings.jsonFileNm, true ) ; 
+		staticXhttp.open("GET", "default.json", true ) ; 
 		staticXhttp.send() ;
 		staticXhttp.onreadystatechange = ()=>{
 			if ( (staticXhttp.readyState == 4) && (staticXhttp.status == 200) ){

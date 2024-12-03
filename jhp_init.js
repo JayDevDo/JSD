@@ -1,21 +1,20 @@
 /* 
 	jhp_init.js
-
-	version = 202404281500
-
+	version = 20241129 - 18h00
 */ 
 
-console.log("jhp_init.js -> on_load:  currentState: ", currentState() ) ;
+console.log("jhp_init.js -> on_load:  currentState: ", currentState("jhp_init-ON-LOAD") ) ;
 
 /* 	first build	 */
 
 loadInit = ()=>{
 
-	console.log("jhp_init.js -> loadInit.start:  currentState: ", currentState() ) ;
+	console.log("jhp_init.js -> loadInit.start:  currentState: ", currentState("jhp_init-loadInit-START") ) ;
 
 	if( $("#pageContainer") ){
 
 		// Add pages
+		console.log("jhp_init-loadInit--> appSettings.pages before buildPages: ", appSettings.pages.length )
 		buildPages( appSettings.pages ) ;
 		console.log( "we have", $( "table.pageTable" ).length , "pages" ) ;
 
@@ -65,7 +64,6 @@ loadInit = ()=>{
 			$( "#navi" ).removeClass( "navHori" );
 			$( "#pageContainer" ).removeClass( "pcHori" );
 		}
-		
 
 		$( "#navi" ).addClass( "nav" + appSettings.nav );
 		$( "#pageContainer" ).addClass( "pc" + appSettings.nav ) ;
