@@ -6,7 +6,7 @@ No google or other snooping.
 --------------------------------------------------------------
 
 
-Visit:   https://jaydevdo.github.io/JSD/jaysHomePage.html
+Visit:   https://jaydevdo.github.io/JSD/index.html
 
 
 --------------------------------------------------------------
