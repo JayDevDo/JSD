@@ -23,33 +23,25 @@ hasLclStrg = ()=>{
 	try{ 
 		
 		if( localStorage ){ 
-
 			if( localStorage.length > 0 ){
-
-				if( localStorage.pages && localStorage.dials ){ return true; } 
-
+				if( localStorage.pages && localStorage.dials ){ return true; }else{ return false; }
 			} 
-
 		}else{ 
 			return false; 
 		}
-
 	}catch( error ){ return false; }
-
 }
 
 del_LS_All = ()=>{ 
 	console.log("del_LS_All ALL");
-	localStorage.removeItem["pages"];
-	localStorage.removeItem["dials"];
-	localStorage.removeItem["actPg"];
+	set_LS_Base(); 
 }
 
 set_LS_Base = ()=>{
 	/* Check for json here */
-	localStorage.jhp.pages = JSON.stringify([]) ;
-	localStorage.jhp.dials = JSON.stringify([]) ;
-	localStorage.jhp.actPg = JSON.stringify(0)  ;
+	localStorage.pages = JSON.stringify([]) ;
+	localStorage.dials = JSON.stringify([]) ;
+	localStorage.actPg = JSON.stringify(0)  ;
 }
 
 
@@ -63,7 +55,7 @@ hasLclStrgPgs = ()=>{
 
 	if( hasLclStrg() ){
 		try {
-			console.log("hasLclStrgPgs localStorage.jhp.pages ", localStorage.pages );
+			// console.log("hasLclStrgPgs localStorage.pages ", localStorage.pages );
 			return true ;
 		} catch (error) {
 			console.error("hasLclStrg pages error", error, "\nappSettings.pages", appSettings.pages);
@@ -71,10 +63,12 @@ hasLclStrgPgs = ()=>{
 			// set_LS_Pages(appSettings.pages);
 			return false ;
 		}
+	}else{
+		return false ;
 	}
 }
 
-del_LS_Pages = ()=>{ console.log("del_LS_All PAGES");localStorage.removeItem["pages"];}
+del_LS_Pages = ()=>{ console.log("del_LS_All PAGES");localStorage.pages = JSON.stringify([]) ;}
 
 set_LS_Pages = (pagesArray)=>{ 
 	del_LS_Pages();
@@ -101,20 +95,21 @@ hasLclStrgDls = ()=>{
 
 	if( hasLclStrg() ){
 		try {
-			console.log("hasLclStrgPgs localStorage.jhp.dials ", localStorage.dials );
+			// console.log("hasLclStrgPgs localStorage.dials ", localStorage.dials );
 			return true ;
 		} catch (error) {
 			console.error("hasLclStrg dials error",error,"\nappTiles", appTiles );
 			/* Check for json here */
 			return false ;
 		}
+	}else{
+		return false ;
 	}
-
 }
 
 del_LS_Dials = ()=>{
 	console.log("del_LS_All DIALS") ;
-	localStorage.removeItem["dials"] ;
+	localStorage.dials = JSON.stringify([]) ;
 }
 
 set_LS_Dials = ( dialArray )=>{
@@ -156,11 +151,25 @@ del_LS_DialX = ( dialIdx )=>{
 #################
 */
 
-hasLclStrgActPg = ()=>{ return ( localStorage.actPg != "undefined" ) ; }
+hasLclStrgActPg = ()=>{ 
+
+	if( hasLclStrg() ){
+		try {
+			// console.log("hasLclStrgPgs localStorage.actPg ", localStorage.dials );
+			return true ;
+		} catch (error) {
+			console.error("hasLclStrg activePage error",error,"\nappTiles", appTiles );
+			/* Check for json here */
+			return false ;
+		}
+	}else{
+		return false ;
+	}
+}
 
 del_LS_ActPg = ()=>{
 	console.log("del_LS_actPg") ;
-	localStorage.removeItem["actPg"] ;
+	localStorage.actPg = JSON.stringify( -1 ) ;
 }
 
 set_LS_ActPg = ( pgIndex )=>{
@@ -212,7 +221,7 @@ lsJsonLoaded = ()=>{ return ( localStorage.jsonImported != "undefined" ) ; }
 
 del_LS_jsonImported = ()=>{
 	console.log("del_LS_jsonImported") ;
-	localStorage.removeItem["jsonImported"] ;
+	localStorage.jsonImported = JSON.stringify( 0 )  ;
 }
 
 set_LS_jsonImported = ()=>{
@@ -275,7 +284,7 @@ jhp_LS_init = ()=>{
 		console.log("has Lcl Strg Base! hasLclStrgPgs: " , hasLclStrgPgs(), "\nhasLclStrgDls: ", hasLclStrgDls() ) ;
 
 		if( hasLclStrgPgs() ){
-			console.log("has Lcl Strg Pgs", hasLclStrgPgs(), "ls=", get_LS_Pages() ) ;
+			// console.log("has Lcl Strg Pgs", hasLclStrgPgs(), "ls=", get_LS_Pages() ) ;
 			appSettings.pages = get_LS_Pages() ;
 		}else{
 			console.log("NO Lcl Strg Pgs") ;
@@ -285,7 +294,7 @@ jhp_LS_init = ()=>{
 
 
 		if( hasLclStrgDls() ){
-			console.log("has Lcl Strg Dls", hasLclStrgDls(), "ls=", get_LS_Dials()  ) ;
+			// console.log("has Lcl Strg Dls", hasLclStrgDls(), "ls=", get_LS_Dials()  ) ;
 			appTiles = get_LS_Dials() ;
 		}else{
 			console.log("NO Lcl Strg Dls") ;
@@ -296,7 +305,7 @@ jhp_LS_init = ()=>{
 
 
 		if( hasLclStrgActPg() ){
-			console.log("has Lcl Strg actPg: ", hasLclStrgActPg(), "actPg= ", get_LS_ActPg() ) ;
+			// console.log("has Lcl Strg actPg: ", hasLclStrgActPg(), "actPg= ", get_LS_ActPg() ) ;
 			appSettings.activePage = get_LS_ActPg() ;
 		}else{
 			console.log("NO Lcl Strg actPg") ;

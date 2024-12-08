@@ -354,14 +354,6 @@
 
 						<tr>
 							<td>
-								<button id="dlgXprtBttnBoth" onclick="openWarning(0)" >Import Both</button><br>
-								<button id="dlgXprtBttnDials" onclick="openWarning(1)" >Import Dials</button><br>
-								<button id="dlgXprtBttnPages" onclick="openWarning(2)" >Import Pages</button>
-							</td>
-						</tr>
-
-						<tr>
-							<td>
 								<input id="xprtImprtBttn" type="file" value="allDials.json" webkitfile file></input>
 							</td>							
 						</tr>
@@ -370,15 +362,27 @@
 					
 					<tfoot>
 						<tr>
-							<td colspan="3">tfoot
-							</td>
+							<th>\/</th>
+							<th>\/</th>
+							<th>\/</th>
 						</tr>
-					</tfoot>
+						<tr>
+							<td colspan="1"><button id="dlgXprtBttnBoth" onclick="openWarning(0)" >Import Both</button></td>
+							<td colspan="1"><button id="dlgXprtBttnDials" onclick="openWarning(1)" >Import Dials</button></td>
+							<td colspan="1"><button id="dlgXprtBttnPages" onclick="openWarning(2)" >Import Pages</button></td>
+						</tr>
+						<tr>
+							<th>/\</th>
+							<th>/\</th>
+							<th>/\</th>
+						</tr>
 
+					</tfoot>
 				</table>
 			<!-- /form -->
 		</div>
 
+		<div id="importWarning"></div>
 
 		<div id="settingsDetailsContainer">
 

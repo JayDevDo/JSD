@@ -1,0 +1,35 @@
+ [
+	 [
+		{
+			"index":1,
+			"name": "Jays Speed Dial on github",
+			"url": "https://github.com/JayDevDo/JSD",
+			"bgClr": "#FF7800",
+			"fgClr": "#000000",
+			"pos": [ 0, 0, 0, true ],
+			"lstVst": ""
+		},{	
+			"index":0,
+			"name": "search DDG",
+			"url": "https://duckduckgo.com/?q=entersearchstringhere&df=y&ia=web",
+			"bgClr": "#000000",
+			"fgClr": "#FFFFFF",
+			"pos": [ 0, 1, 0, true ],
+			"lstVst": ""
+		},{	
+			"index":2,
+			"name": "about:about",
+			"url": "about:about",
+			"bgClr": "#000000",
+			"fgClr": "#FFFFFF",
+			"pos": [ 0, 0, 2, true],
+			"lstVst": ""
+		}
+	],
+	[
+		{ "name": "MISC", 	"color": "#FFFF00", "matrix": [4,6] },
+		{ "name": "DEV", 	"color": "#00FFFF", "matrix": [3,3] },
+		{ "name": "STREAM", "color": "#FF00FF", "matrix": [4,2] },
+		{ "name": "SERVER", "color": "#00FF00", "matrix": [2,4] }
+	]
+]
