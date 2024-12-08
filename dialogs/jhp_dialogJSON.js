@@ -43,13 +43,34 @@ let openExportDialog = ()=>{
 
 updateImportDlgLen = ()=>{ 
 	console.log("updateImportDlgLen fired"); 
-	$( "#xprtInfoTALen" ).text(  $("#jsonXprtTA").val().length ) ; 
+	let textFieldVal 		= "" ;
+	let textFieldValParsed 	= [] ;
+	let resultStr 			= "" ;
+
+	try{
+		textFieldVal = $("#jsonXprtTA").val() ;
+
+		if( textFieldVal == "replace this text" ){
+			resultStr = "paste the json text" ;
+		}else{
+			textFieldtextParsed = JSON.parse( textFieldVal ) ;
+			resultStr = "Dials: " + textFieldtextParsed[0].length + "\nPages: " + textFieldtextParsed[1].length ;
+		}
+
+	}finally{
+		console.log(
+			"updateImportDlgLen -textFieldVal:", textFieldVal.length, 
+			"textFieldValParsed:", textFieldValParsed.length, 
+			"resultStr:", resultStr 
+		) ;
+	}
+	$( "#xprtInfoTALen" ).text( resultStr ) ; 
 }
 
 
 checkJSON = ()=>{
 
-	console.log("checkJSON #jsonXprtTA.val=", $("#jsonXprtTA").val() ) ; 
+	//console.log("checkJSON #jsonXprtTA.val=", $("#jsonXprtTA").val() ) ; 
 	let tmpArray = JSON.parse( $( "#jsonXprtTA" ).val() ) || [] ; 
 
 	console.log("checkJSON is Array", Array.isArray(tmpArray), " tmpArray-len:\t", 	tmpArray.length ) ; 
@@ -79,6 +100,8 @@ checkJSON = ()=>{
 						edinfoBrdr 	= "lime" ;
 						tmpTiles = tmpArray ;
 						$( edInfo ).append( ["<span>", edinfoTxt, "</span>"].join("") ) ; 
+					}else{
+						$( "#dlgXprtBttnDials" ).hide() ;
 					}
 
 					if( vResult[1] > 0){
@@ -88,6 +111,8 @@ checkJSON = ()=>{
 						edinfoBrdr 	= "lime" ;
 						tmpPages = tmpArray ;
 						$( edInfo ).append( ["<span>", edinfoTxt, "</span>"].join("") ) ; 
+					}else{
+						$( "#dlgXprtBttnPages" ).hide() ;
 					}
 
 					if( vResult[2] > 0){
@@ -95,7 +120,7 @@ checkJSON = ()=>{
 						edinfoBrdr 	= "orange" ;
 						$( edInfo ).append( ["<span>", edinfoTxt, "</span>"].join("") ) ; 
 					}
-					
+
 					break;
 
 		case 2: 	
@@ -314,6 +339,8 @@ $( exportDialog ).dialog({
 
 
 openWarning = (choice)=>{
+	let warnTitles = ["both", "dials", "pages"] ;
+	console.log("openWarning choice", choice , "tabs:", tmpPages.length, "dials:",tmpTiles.length ) ;
 	$( "#importWarning" ).dialog( "option", "title", "Import and Replace" ) ; 
 	$( "#importWarning" ).dialog( "open" ) ; 
 }
@@ -329,13 +356,25 @@ $( "#importWarning" ).dialog({
 					click: function(){ $( this ).dialog( "close" ) ; }
 				},
 				{ 	text: "Replace existing dials", 
-					click: function(){ importIntoDials(tmpTiles) ; }
+					click: function(){ 
+						console.log("importing tmpTiles:", tmpTiles ) ;
+						importIntoDials(tmpTiles) ; 
+					}
 				},
 				{ 	text: "Replace existing pages", 
-					click: function(){ importIntoPages(tmpPages) ; }
+					click: function(){ 
+						console.log("importing tmpPages:", tmpPages) ;
+						importIntoPages(tmpPages) ; }
 				},		
 				{ 	text: "Replace both existing pages and dials", 
-					click: function(){ importIntoPages(tmpPages) ; importIntoDials(tmpTiles) ; }
+					click: function(){ 
+						console.log("importing tmpPages:", tmpPages, "tmpTiles:", tmpTiles ) ;
+						importIntoPages(tmpPages) ; 
+						importIntoDials(tmpTiles) ; 
+						loadInit() ; 
+						closeExportDialog() ;
+						$( this ).dialog( "close" ) ; 
+					}
 				},
 				{	text: "Apply (save)",
 					click: function(){ 	
