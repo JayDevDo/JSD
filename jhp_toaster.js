@@ -1,8 +1,6 @@
 /* 
 	jhp_toaster.js 
-
-	version = 202404281500
-	
+	version = 20241211-20h00	
 */
 
 let toastIndexer = 0 ;
@@ -19,7 +17,7 @@ myToaster = ( msg )=>{
 						].join("")
 					);
 
-	console.log( "toast", $( newToast ) ) ;
+	// console.log( "toast", $( newToast ) ) ;
 	toastManagerAdd( $( newToast ) ) ; 
 }
 
@@ -31,22 +29,24 @@ delToast = ( toastID )=>{
 
 toastManagerPop = ()=>{ 
 	let currentToastStack = $("#toastContainer div.toast" ).get() ; 
-	console.log( "toastManagerPop", currentToastStack.length ) ;
-	$.each(
-		currentToastStack,
-		function(i,t){
-			console.log("i",i, "t", t );
-		}
-	);
+	
+	// console.log( "toastManagerPop", currentToastStack.length ) ;
+	/* 
+		$.each(
+			currentToastStack,
+			function(i,t){
+				console.log("i",i, "t", t );
+			}
+		);
 
-	currentToastStack[4].remove();
-	console.log( "toastManagerPop", currentToastStack.length ) ;
-
+	*/
+	if( currentToastStack.length>4){ currentToastStack[4].remove(); }
+	// console.log( "toastManagerPop", currentToastStack.length ) ;
 }
 
 toastManagerAdd = ( toast )=>{
-	console.info( "toastManagerAdd before-> max#", appSettings.maxToasts, " current#", $( "#toastContainer div.toast" ).length );
+	// console.info( "toastManagerAdd before-> max#", appSettings.maxToasts, " current#", $( "#toastContainer div.toast" ).length );
 	if( appSettings.maxToasts == $( "#toastContainer div.toast ").length ){ toastManagerPop() ; }
 	$( "#toastContainer" ).prepend( toast ) ;
-	console.info("toastManagerAdd after-> max#", appSettings.maxToasts, " current#", $( "#toastContainer div.toast" ).length );
+	// console.info("toastManagerAdd after-> max#", appSettings.maxToasts, " current#", $( "#toastContainer div.toast" ).length );
 }

@@ -1,6 +1,6 @@
 /* 
 	jhp_init.js
-	version = 20241129 - 18h00
+	version = 20241211 - 20h00
 */ 
 
 console.log("jhp_init.js -> on_load:  currentState: ", currentState("jhp_init-ON-LOAD") ) ;
@@ -14,14 +14,15 @@ loadInit = ()=>{
 	if( $("#pageContainer") ){
 
 		// Add pages
-		console.log("jhp_init-loadInit--> appSettings.pages before buildPages: ", appSettings.pages.length )
+		console.log("jhp_init-loadInit--> appSettings.pages before buildPages: ", appSettings.pages.length ) ;
 		buildPages( appSettings.pages ) ;
 		console.log( "we have", $( "table.pageTable" ).length , "pages" ) ;
 
 		for( let nt = 0; nt < appTiles.length; nt++ ){
 			// newMakeButton
 			// let newButton 	= makeButton( appTiles[nt].pos[0], nt, appTiles[nt], false ) ; 
-
+			// Re-index the appTiles.
+			appTiles[nt].index = nt ;
 			let newButton 	= 	newMakeButton( appTiles[nt].pos[0], nt, appTiles[nt] ) ; 
 			let trgtCell 	= selectCell( appTiles[nt].pos ) ;
 			$(trgtCell).text( "" ) ;

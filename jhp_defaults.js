@@ -1,7 +1,6 @@
 /* 
 	jhp_defaults.js
-
-	version = 20241126-20h30
+	version = 20241211 - 20h00
 
 	Initial and fall-back settings, pages and dials.
 
@@ -112,7 +111,7 @@ handleDelete = (dialIndex)=>{
 	console.log("handleDelete appTiles[dialIndex] = ",  appTiles[dialIndex] ) ;
 
 	let toastMsg 	=	[ appTiles[dialIndex].name , " was moved to deletedDials. Reload the page (F5) to see the changes." ].join("") ;
-	myToaster( toastMsg ) ;
+	// myToaster( toastMsg ) ;
 
 	let dialPage 	= 	appTiles[dialIndex].pos[0] ; 
 	let deletedDial =	appTiles.splice( dialIndex, 1 ) ;

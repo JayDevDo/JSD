@@ -1,6 +1,6 @@
 /* 
 	jhp_builds.js
-	version = 20241125-1800	
+	version = 20241211 - 20h00
 */ 
 
 const bttnWdthPerc = 0.82;

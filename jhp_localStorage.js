@@ -1,7 +1,6 @@
 /* 
 	jhp_localStorage.js
-	
-	version = 20241126-21h00
+	version = 20241211 - 20h00
 
 	Loads or creates localstorage objects.
 	If existing LS, then LS will be used.
