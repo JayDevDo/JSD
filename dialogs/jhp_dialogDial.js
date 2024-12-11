@@ -1,7 +1,6 @@
 /* 
 	jhp_dialogDial.js 
-
-	version 20241126-21h00
+	version = 20241211 - 20h00
 
 	Handles all dialog activity for Dials (aka. tiles, actually buttons )
 	The tile locator will check all dials , 
@@ -9,6 +8,27 @@
 		if no match is found in appTiles, a dialTemplate is returned having index 999
 
 */
+
+const dialIndexInAppTiles = (dialIndexStr)=>{
+
+	if( appTiles.length>0){
+		console.log("dialIndexInAppTiles appTiles YES") ;
+
+		for( let t=0; t<appTiles.length; t++ ){
+			if( parseInt(appTiles[t].index) == parseInt( dialIndexStr ) ){
+				return t;
+			}
+		}
+
+		return -1;
+
+	}else{
+
+		console.log("dialIndexInAppTiles appTiles NO") ;
+
+	}
+}
+
 
 let activeDial = ""
 
@@ -20,7 +40,7 @@ let openDialDialog 	= (p,r,c)=>{
 
 	activeDial = tileLocator( p, r, c ) ;
 	let chosenDial 	= activeDial;
-	let editOrAdd 	= (chosenDial.name == "new dial")? "Add new dial":"Edit: " + chosenDial.name ;
+	let editOrAdd 	= (chosenDial.name == "new dial")? "Add new dial":"Edit: " + "#"+chosenDial.index + "-" + chosenDial.name ;
 	let urlWidth 	= parseInt( screen.width * 0.40 ) ;
 
 	console.log(
@@ -106,10 +126,9 @@ $( dialDialog ).dialog({
 		},{
 			text: "Delete", 
 			click: function(){ 
-				let dialIndexDel = parseInt( $( "#dialNameSelect" ).attr("dlindex") ) || 999 ;				
-				console.log("deleting idx", dialIndexDel ) ; 
-				console.log("deleting dial ", appTiles[dialIndexDel ] ) ;
-				handleDelete( dialIndexDel ) ;
+				let indexOfDial = dialIndexInAppTiles( activeDial.index.toString() ) ;
+				console.log("deleting appTiles[", indexOfDial, "] \n", appTiles[indexOfDial ] ) ;
+				handleDelete( indexOfDial ) ;
 				activeDial = ""
 				$( this ).dialog( "close" ) ; 
 			} 
